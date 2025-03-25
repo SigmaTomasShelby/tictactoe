@@ -1,0 +1,10 @@
+class Main {
+    function void main() {
+        var TicTacToe game;
+        let game = TicTacToe.new();  // Создаем экземпляр игры
+        do Output.printString("Game created. Starting...");
+        do Output.println();  
+        do game.play();  // Запускаем игру
+        return;
+        }
+}

@@ -1,0 +1,141 @@
+class TicTacToe {
+    field Array board;  // Game board (3x3)
+    field int currentPlayer;  // Current player (1 - X, 2 - O)
+
+    constructor TicTacToe new() {
+        let board = Array.new(9);
+        let currentPlayer = 1;
+        return this;
+    }
+
+    method void drawBoard() {
+        var int i;
+        let i = 0;
+        while (i < 9) {
+            if (board[i] = 0) { 
+                do Output.printString("#"); 
+            }
+            if (board[i] = 1) { 
+                do Output.printString("X"); 
+            }
+            if (board[i] = 2) { 
+                do Output.printString("O"); 
+            }
+            if (((i+1) = 3) | ((i+1) = 6) | ((i+1) = 9) ){
+                do Output.println();
+            }
+
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method boolean makeMove(int row, int col) {
+        var int index;
+        let index = row * 3 + col;
+        if (board[index] = 0) {
+            let board[index] = currentPlayer;
+            return true;
+        }
+        return false;
+    }
+
+    method boolean checkWin() {
+        // Check rows
+        if ((board[0] = currentPlayer) & (board[1] = currentPlayer) & (board[2] = currentPlayer)) { return true; }
+        if ((board[3] = currentPlayer) & (board[4] = currentPlayer) & (board[5] = currentPlayer)) { return true; }
+        if ((board[6] = currentPlayer) & (board[7] = currentPlayer) & (board[8] = currentPlayer)) { return true; }
+
+        // Check columns
+        if ((board[0] = currentPlayer) & (board[3] = currentPlayer) & (board[6] = currentPlayer)) { return true; }
+        if ((board[1] = currentPlayer) & (board[4] = currentPlayer) & (board[7] = currentPlayer)) { return true; }
+        if ((board[2] = currentPlayer) & (board[5] = currentPlayer) & (board[8] = currentPlayer)) { return true; }
+
+        // Check diagonals
+        if ((board[0] = currentPlayer) & (board[4] = currentPlayer) & (board[8] = currentPlayer)) { return true; }
+        if ((board[2] = currentPlayer) & (board[4] = currentPlayer) & (board[6] = currentPlayer)) { return true; }
+
+        return false;
+    }
+
+    method boolean isBoardFull() {
+        var int i;
+        let i = 0;
+        while (i < 9) {
+            if (board[i] = 0) { return false; }
+            let i = i + 1;
+        }
+        return true;
+    }
+
+    method void clearScreenHelper() {
+    var int i;
+    let i = 0;
+    while (i < 18) {  // Выводим достаточно строк, чтобы заполнить экран
+        do Output.println();
+        let i = i + 1;
+        }
+        return;
+    }  
+
+    method void switchPlayer() {
+        if (currentPlayer = 1) { 
+            let currentPlayer = 2; 
+        } else { 
+            let currentPlayer = 1; 
+        }
+        return;
+    }
+
+    method void play() {
+        var int row, col;
+        var boolean validMove;
+
+        do Output.printString("Welcome to Tic-Tac-Toe!");
+        do Output.println(); 
+
+        while (true) {
+            do drawBoard();
+
+            do Output.printString("Player ");
+            do Output.printInt(currentPlayer);
+            let row = Keyboard.readInt(", enter row (0-2): ");
+            let col = Keyboard.readInt("Enter column (0-2): ");
+            do Screen.clearScreen();
+            do clearScreenHelper();
+            let validMove = makeMove(row, col);
+            if (validMove) {
+                if (checkWin()) {
+                    do drawBoard();
+                    do Output.printString("Player ");
+                    do Output.printInt(currentPlayer);
+                    do Output.printString(" wins!");
+                    do Output.println(); 
+                    return;
+                }
+                if (isBoardFull()) {
+                    do drawBoard();
+                    do Output.printString("It's a draw!");
+                    do Output.println(); 
+                    return;
+                }
+                do switchPlayer();
+            } else {
+                do Output.printString("Invalid move. Try again.");
+                do Output.println(); 
+            }
+        }
+        return;
+    }
+
+   function void main() {
+      var TicTacToe game;
+       let game = TicTacToe.new();  // Create game instance
+       do Output.printString("Game created. Starting...");
+       do Output.println();
+       do game.play();  // Start the game
+       return;
+  }
+
+}
+
